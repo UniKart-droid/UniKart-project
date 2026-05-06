@@ -64,7 +64,6 @@ const Chat = () => {
     const fetchSeller = async () => {
       if (!sellerId || sellerId === "undefined") return;
       try {
-       
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/user/${sellerId}`);
         if (res.data && res.data.success) {
           setSellerName(res.data.data.name || "Unknown User");
@@ -104,8 +103,9 @@ const Chat = () => {
   useEffect(() => {
     if (!chatId || !isConnected || !socketRef.current) return;
 
+    const socket = socketRef.current; // Create a stable reference
     console.log(" Joining room:", chatId);
-    socketRef.current.emit("join_chat", chatId);
+    socket.emit("join_chat", chatId);
 
     const handleMessage = (msg) => {
       console.log(" New message received via socket:", msg);
@@ -118,8 +118,14 @@ const Chat = () => {
       });
     };
 
-    socketRef.current.on("receive_message", handleMessage);
-    return () => socketRef.current.off("receive_message", handleMessage);
+    socket.on("receive_message", handleMessage);
+
+    return () => {
+      // Fixed: Added null check to prevent white screen crash on unmount
+      if (socket) {
+        socket.off("receive_message", handleMessage);
+      }
+    };
   }, [chatId, isConnected]);
 
   /* ---------------- LOAD HISTORY ---------------- */
