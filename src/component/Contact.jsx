@@ -1,132 +1,74 @@
-import React, { useState } from "react";
-import Footer from "./Footer"; 
+import React from "react";
+import Footer from "./Footer";
+import { FiMail, FiMapPin, FiMessageCircle } from "react-icons/fi";
+
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    console.log("Contact Data:", formData);
-
-   
-
-    setSubmitted(true);
-
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
-    });
-  };
-
   return (
-    
-    <div className="min-h-screen bg-white pt-20">
-      
-      <div className="px-6 md:px-16 pb-12">
+    <div className="min-h-screen bg-white pt-24">
+      <div className="px-6 md:px-16 pb-20">
         
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <h1 className="text-4xl font-bold text-gray-800 mb-3">
-            Contact Us
+        {/* HEADER SECTION */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+            Get in <span className="text-orange-500">Touch</span>
           </h1>
-          <p className="text-gray-600">
-            Have questions or feedback? We'd love to hear from you.
+          <p className="text-lg text-gray-600 leading-relaxed">
+            Have questions about UniKart? We're here to help. Reach out to us directly 
+            and we'll get back to you as soon as possible.
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+        {/* INFO CARDS GRID */}
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
           
-          
-          <div className="bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              Get in Touch
-            </h2>
-
-            <p className="text-gray-600">
-              Reach out to us for any queries regarding buying, selling or using UniKart.
+          {/* EMAIL CARD (Link Removed) */}
+          <div className="p-8 bg-gray-50 rounded-3xl border border-gray-100 shadow-sm transition-all duration-300">
+            <div className="w-14 h-14 bg-orange-500 rounded-2xl flex items-center justify-center text-white mb-6">
+              <FiMail size={28} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Email Us</h2>
+            <p className="text-gray-600 mb-6">
+              For support, feedback, or any business inquiries, drop us a line anytime.
             </p>
-
-            <div className="space-y-4 text-gray-900 font-medium">
-              <p>📍 Location: Dharamshala</p>
-              <p>📧 Email: rajputridhi92@gmail.com</p>
-              
+            <div className="text-orange-600 font-bold text-lg">
+              rajputridhi92@gmail.com
             </div>
           </div>
 
-          {/* RIGHT FORM */}
-          <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-50">
-            
-            {submitted && (
-              <p className="text-green-600 mb-4 font-bold">
-                Message sent successfully!
-              </p>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-
-              {/* Name */}
-              <div>
-                <label className="block mb-1 font-bold text-black">Full Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-orange-400 outline-none text-black"
-                  placeholder="Enter your name"
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block mb-1 font-bold text-black">Email Address</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-orange-400 outline-none text-black"
-                  placeholder="Enter your email"
-                />
-              </div>
-
-              {/* Message */}
-              <div>
-                <label className="block mb-1 font-bold text-black">Message</label>
-                <textarea
-                  name="message"
-                  rows="4"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-orange-400 outline-none text-black"
-                  placeholder="How can we help?"
-                ></textarea>
-              </div>
-
-              {/* Button */}
-              <button
-                type="submit"
-                className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold hover:bg-orange-600 transition shadow-md"
-              >
-                Send Message
-              </button>
-
-            </form>
+          {/* OFFICE/LOCATION CARD */}
+          <div className="p-8 bg-gray-50 rounded-3xl border border-gray-100 shadow-sm transition-all duration-300">
+            <div className="w-14 h-14 bg-gray-800 rounded-2xl flex items-center justify-center text-white mb-6">
+              <FiMapPin size={28} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Location</h2>
+            <p className="text-gray-600 mb-6">
+              Based in the beautiful hills of Himachal. Currently serving the campus community locally.
+            </p>
+            <div className="text-gray-900 font-bold text-lg">
+              Dharamshala, Himachal Pradesh
+            </div>
           </div>
+
         </div>
+
+        {/* HELP SECTION - Enhanced Styling */}
+        <div className="mt-16 max-w-6xl mx-auto bg-orange-500 rounded-[2.5rem] p-12 text-center text-white shadow-2xl overflow-hidden relative">
+          <div className="relative z-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-6 backdrop-blur-sm">
+              <FiMessageCircle size={32} className="text-white" />
+            </div>
+            <h3 className="text-3xl md:text-4xl font-bold mb-4">Want to sell something quickly?</h3>
+            <p className="text-orange-50 text-lg max-w-xl mx-auto font-medium opacity-90">
+              Just log in to your UniKart account and list your items. For technical issues, 
+              reach out to our support team.
+            </p>
+          </div>
+          
+          {/* Decorative background elements */}
+          <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-400 rounded-full blur-2xl opacity-40"></div>
+          <div className="absolute -bottom-12 -left-12 w-40 h-40 bg-orange-600 rounded-full blur-2xl opacity-30"></div>
+        </div>
+
       </div>
 
       {/* FOOTER SECTION */}
