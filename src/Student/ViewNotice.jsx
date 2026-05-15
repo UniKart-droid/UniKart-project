@@ -8,7 +8,7 @@ const ViewNotices = ({ withLayout = true }) => {
   const [loading, setLoading] = useState(true);
 
   //  Backend API URL
-  const API_URL = "http://localhost:8000/api/notices";
+  const API_URL = "https://unikart-project-backend-production.up.railway.app/api/notices";
 
   //  Fetch data from database
   useEffect(() => {
@@ -149,7 +149,7 @@ const ViewNotices = ({ withLayout = true }) => {
                     {/*  View PDF Button - Connected to File Path */}
                     {notice.pdfUrl ? (
                       <motion.a
-                        href={`http://localhost:8000/uploads/notices/${notice.pdfUrl}`}
+                        href={"https://unikart-project-backend-production.up.railway.app/uploads/notices/" + notice.pdfUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         whileTap={{ scale: 0.95 }}

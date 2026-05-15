@@ -27,7 +27,7 @@ const Login = () => {
     onSubmit: async (values, action) => {
       try {
         const res = await axios.post(
-          "http://localhost:8000/api/user/login",
+          "https://unikart-project-backend-production.up.railway.app/api/user/login",
           values
         );
 

@@ -16,7 +16,7 @@ const StudentDashboard = () => {
   // Fetch approved students
   const fetchStudents = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/user/approved-students");
+      const res = await axios.get("https://unikart-project-backend-production.up.railway.app/api/user/approved-students");
       setStudents(Array.isArray(res.data.students) ? res.data.students : []);
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -33,7 +33,7 @@ const StudentDashboard = () => {
     const confirmDelete = window.confirm("Are you sure to delete this student?");
     if (confirmDelete) {
       try {
-        await axios.patch(`http://localhost:8000/api/user/reject-user/${id}`);
+        await axios.patch("https://unikart-project-backend-production.up.railway.app/api/user/reject-user/" + id);
         setStudents(students.filter((student) => student._id !== id));
       } catch (error) {
         console.error("Error deleting student:", error);
@@ -44,7 +44,7 @@ const StudentDashboard = () => {
   // Handle View Button
   const handleView = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/user/user/${id}`);
+      const res = await axios.get("https://unikart-project-backend-production.up.railway.app/api/user/user/" + id);
       setSelectedUser(res.data.user);
       setIsEditMode(false);
       setIsModalOpen(true);
@@ -65,7 +65,7 @@ const StudentDashboard = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8000/api/user/update-user/${selectedUser._id}`, formData);
+      await axios.put("https://unikart-project-backend-production.up.railway.app/api/user/update-user/" + selectedUser._id, formData);
       alert("Student updated successfully!");
       setIsModalOpen(false);
       fetchStudents(); // Refresh the list
@@ -147,7 +147,14 @@ const StudentDashboard = () => {
           {selectedCard && (
             <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSelectedCard(null)}>
               <div className="bg-white p-4 rounded-3xl shadow-2xl max-w-2xl w-[90%]" onClick={(e) => e.stopPropagation()}>
-                <img src={`http://localhost:8000/${selectedCard.replace(/\\/g, "/")}`} alt="ID Card" className="w-full max-h-[70vh] object-contain rounded-xl" />
+                <img
+  src={
+    "https://unikart-project-backend-production.up.railway.app/" +
+    selectedCard.replace(/\\/g, "/")
+  }
+  alt="ID Card"
+  className="w-full max-h-[70vh] object-contain rounded-xl"
+/>
                 <button onClick={() => setSelectedCard(null)} className="mt-4 px-4 py-2 bg-red-600 text-white rounded-xl w-full font-semibold">Close Preview</button>
               </div>
             </div>

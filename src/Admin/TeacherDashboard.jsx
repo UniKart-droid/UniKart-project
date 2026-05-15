@@ -13,7 +13,7 @@ const TeacherDashboard = () => {
   // Fetch approved teachers
   const fetchTeachers = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/user/approved-teachers");
+      const res = await axios.get("https://unikart-project-backend-production.up.railway.app/api/user/approved-teachers");
       setTeachers(Array.isArray(res.data.teachers) ? res.data.teachers : []);
     } catch (error) {
       console.error("Error fetching teachers:", error);
@@ -30,7 +30,7 @@ const TeacherDashboard = () => {
     const confirmDelete = window.confirm("Are you sure to delete this teacher?");
     if (confirmDelete) {
       try {
-        await axios.patch(`http://localhost:8000/api/user/reject-user/${id}`);
+        await axios.patch("https://unikart-project-backend-production.up.railway.app/api/user/reject-user/" + id);
         setTeachers(teachers.filter((teacher) => teacher._id !== id));
       } catch (error) {
         console.error("Error deleting teacher:", error);
@@ -41,7 +41,7 @@ const TeacherDashboard = () => {
   // Handle View
   const handleView = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/user/user/${id}`);
+      const res = await axios.get("https://unikart-project-backend-production.up.railway.app/api/user/user/" + id);
       setSelectedUser(res.data.user);
       setIsEditMode(false);
       setIsModalOpen(true);
@@ -62,7 +62,7 @@ const TeacherDashboard = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8000/api/user/update-user/${selectedUser._id}`, formData);
+      await axios.put("https://unikart-project-backend-production.up.railway.app/api/user/update-user/" + selectedUser._id, formData);
       alert("Teacher updated successfully!");
       setIsModalOpen(false);
       fetchTeachers(); // Refresh list

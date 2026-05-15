@@ -14,7 +14,7 @@ const AdminUpdateNotice = () => {
     file: null,
   });
 
-  const API_URL = "http://localhost:8000/api/notices";
+  const API_URL = `${import.meta.env.VITE_API_URL}/api/notices`;
 
   const fetchNotices = async () => {
     try {
@@ -45,7 +45,6 @@ const AdminUpdateNotice = () => {
         });
 
         alert("Notice deleted successfully!");
-        // State update karein taaki UI se turant hat jaye
         setNotices(notices.filter((notice) => notice._id !== id));
       } catch (error) {
         console.error("Delete Error:", error);
@@ -135,14 +134,12 @@ const AdminUpdateNotice = () => {
                   </div>
 
                   <div className="mt-6 flex gap-3 justify-end">
-                    {/*  Edit Button */}
                     <button
                       onClick={() => handleEdit(notice)}
                       className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-bold text-sm"
                     >
                       Edit
                     </button>
-                    {/*  Delete Button */}
                     <button
                       onClick={() => handleDelete(notice._id)}
                       className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition font-bold text-sm"

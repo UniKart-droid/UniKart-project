@@ -24,7 +24,7 @@ const UpdateNotes = () => {
 
   const fetchNotes = async () => {
     try {
-      const { data } = await axios.get("http://localhost:8000/api/notes/all");
+      const { data } = await axios.get("https://unikart-project-backend-production.up.railway.app/api/notes/all");
       if (data.success) {
         setNotes(data.notes);
       }
@@ -67,7 +67,7 @@ const UpdateNotes = () => {
         if (!token) return;
 
         const { data } = await axios.delete(
-          `http://localhost:8000/api/notes/delete/${noteId}`,
+          "https://unikart-project-backend-production.up.railway.app/api/notes/delete/" + noteId,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -99,7 +99,7 @@ const UpdateNotes = () => {
       if (!token) return;
 
       const { data } = await axios.put(
-        `http://localhost:8000/api/notes/update/${form.id}`,
+        "https://unikart-project-backend-production.up.railway.app/api/notes/update/" + form.id,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

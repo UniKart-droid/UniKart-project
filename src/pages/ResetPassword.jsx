@@ -15,7 +15,7 @@ const ResetPassword = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/user/reset-password/${token}`,
+        "https://unikart-project-backend-production.up.railway.app/api/user/reset-password/" + token,
         { password }
       );
 

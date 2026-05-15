@@ -13,7 +13,7 @@ const ForgotPassword = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/user/forgot-password",
+        "https://unikart-project-backend-production.up.railway.app/api/user/forgot-password",
         { email }
       );
 

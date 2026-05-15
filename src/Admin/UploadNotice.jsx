@@ -10,7 +10,7 @@ const UploadNotice = () => {
   const [loading, setLoading] = useState(false);
 
   //  1. Sahi API URL (Backend app.js aur routes ke matching)
-  const API_URL = "http://localhost:8000/api/notices"; 
+  const API_URL = "https://unikart-project-backend-production.up.railway.app/api/notices";
 
   const validationSchema = Yup.object({
     title: Yup.string()

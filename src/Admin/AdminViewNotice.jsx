@@ -8,7 +8,7 @@ const AdminViewNotice = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_URL = "http://localhost:8000/api/notices"; 
+  const API_URL = "https://unikart-project-backend-production.up.railway.app/api/notices";
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -74,7 +74,7 @@ const AdminViewNotice = () => {
                    
                     {notice.pdfUrl && (
                       <a
-                        href={`http://localhost:8000/uploads/notices/${notice.pdfUrl}`} 
+                        href={"https://unikart-project-backend-production.up.railway.app/uploads/notices/" + notice.pdfUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-orange-500 hover:text-orange-600 font-bold transition-colors"
