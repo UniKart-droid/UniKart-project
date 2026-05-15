@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { 
-  FiMessageSquare, FiMenu, FiX, FiChevronDown, 
-  FiUpload, FiEye, FiShoppingCart, FiBook, FiEdit, 
-  FiUser, FiUsers, FiBriefcase 
+import {
+  FiMessageSquare,
+  FiMenu,
+  FiX,
+  FiChevronDown,
+  FiUpload,
+  FiEye,
+  FiShoppingCart,
+  FiBook,
+  FiEdit,
+  FiUser,
+  FiUsers,
+  FiBriefcase,
 } from "react-icons/fi";
 
 const Navbar = () => {
@@ -18,8 +27,10 @@ const Navbar = () => {
 
   const [token, setToken] = useState(localStorage.getItem("token"));
 
-  // ✅ USER DATA
-  const user = JSON.parse(localStorage.getItem("user"));
+  // ✅ USER STATE
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user"))
+  );
 
   const teacherLinks = [
     { name: "Upload Notes", path: "/teacher/upload-notes", icon: <FiUpload /> },
@@ -40,15 +51,21 @@ const Navbar = () => {
     { name: "Teacher Dashboard", path: "/admin/teacher-dashboard", icon: <FiUsers /> },
   ];
 
+  // ✅ SYNC TOKEN + USER
   useEffect(() => {
-    const syncToken = () => setToken(localStorage.getItem("token"));
+    const syncAuth = () => {
+      setToken(localStorage.getItem("token"));
+      setUser(JSON.parse(localStorage.getItem("user")));
+    };
 
-    window.addEventListener("storage", syncToken);
-    window.addEventListener("tokenChange", syncToken);
+    window.addEventListener("storage", syncAuth);
+    window.addEventListener("tokenChange", syncAuth);
+
+    syncAuth();
 
     return () => {
-      window.removeEventListener("storage", syncToken);
-      window.removeEventListener("tokenChange", syncToken);
+      window.removeEventListener("storage", syncAuth);
+      window.removeEventListener("tokenChange", syncAuth);
     };
   }, []);
 
@@ -75,6 +92,7 @@ const Navbar = () => {
     localStorage.removeItem("userId");
 
     setToken(null);
+    setUser(null);
 
     window.dispatchEvent(new Event("tokenChange"));
 
