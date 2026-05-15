@@ -1,18 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import {
-  FiMessageSquare,
-  FiMenu,
-  FiX,
-  FiChevronDown,
-  FiUpload,
-  FiEye,
-  FiShoppingCart,
-  FiBook,
-  FiEdit,
-  FiUser,
-  FiUsers,
-  FiBriefcase,
+import { 
+  FiMessageSquare, FiMenu, FiX, FiChevronDown, 
+  FiUpload, FiEye, FiShoppingCart, FiBook, FiEdit, 
+  FiUser, FiUsers, FiBriefcase 
 } from "react-icons/fi";
 
 const Navbar = () => {
@@ -25,12 +16,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // ✅ TOKEN & USER STATE (लॉगिन सिंक के लिए)
   const [token, setToken] = useState(localStorage.getItem("token"));
-
-  // ✅ USER STATE
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user"))
-  );
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   const teacherLinks = [
     { name: "Upload Notes", path: "/teacher/upload-notes", icon: <FiUpload /> },
@@ -51,8 +39,8 @@ const Navbar = () => {
     { name: "Teacher Dashboard", path: "/admin/teacher-dashboard", icon: <FiUsers /> },
   ];
 
-  // ✅ SYNC TOKEN + USER
   useEffect(() => {
+    // ✅ SYNC TOKEN AND USER DATA
     const syncAuth = () => {
       setToken(localStorage.getItem("token"));
       setUser(JSON.parse(localStorage.getItem("user")));
@@ -60,8 +48,6 @@ const Navbar = () => {
 
     window.addEventListener("storage", syncAuth);
     window.addEventListener("tokenChange", syncAuth);
-
-    syncAuth();
 
     return () => {
       window.removeEventListener("storage", syncAuth);
@@ -92,7 +78,7 @@ const Navbar = () => {
     localStorage.removeItem("userId");
 
     setToken(null);
-    setUser(null);
+    setUser(null); // ✅ Reset User State
 
     window.dispatchEvent(new Event("tokenChange"));
 
@@ -190,7 +176,7 @@ const Navbar = () => {
               Teacher
             </Link>
 
-            {/* ✅ ADMIN ONLY */}
+            {/* ✅ ADMIN ONLY (Now reacts to login instantly) */}
             {user?.role === "admin" && (
               <Link
                 to={routes.admin}
