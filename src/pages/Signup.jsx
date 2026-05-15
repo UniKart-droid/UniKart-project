@@ -41,7 +41,7 @@ const Signup = () => {
     }
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:8000/api/user/send-otp", { 
+      const res = await axios.post("https://unikart-project-backend-production.up.railway.app/api/user/send-otp", {
         email: values.email 
       });
       alert(res.data.message);
@@ -87,7 +87,7 @@ const Signup = () => {
           formData.append("id_card", values.id_card);
         }
 
-        const res = await axios.post("http://localhost:8000/api/user/signup", formData, {
+        const res = await axios.post("https://unikart-project-backend-production.up.railway.app/api/user/signup", formData, {
           headers: { "Content-Type": "multipart/form-data" }
         });
 
