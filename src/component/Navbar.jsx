@@ -15,7 +15,11 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
   const [token, setToken] = useState(localStorage.getItem("token"));
+
+  // ✅ USER DATA
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const teacherLinks = [
     { name: "Upload Notes", path: "/teacher/upload-notes", icon: <FiUpload /> },
@@ -38,8 +42,10 @@ const Navbar = () => {
 
   useEffect(() => {
     const syncToken = () => setToken(localStorage.getItem("token"));
+
     window.addEventListener("storage", syncToken);
     window.addEventListener("tokenChange", syncToken);
+
     return () => {
       window.removeEventListener("storage", syncToken);
       window.removeEventListener("tokenChange", syncToken);
@@ -50,7 +56,9 @@ const Navbar = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -65,8 +73,11 @@ const Navbar = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("userId");
+
     setToken(null);
+
     window.dispatchEvent(new Event("tokenChange"));
+
     navigate("/Login");
   };
 
@@ -87,36 +98,95 @@ const Navbar = () => {
     <>
       <nav
         className={`fixed top-0 left-0 w-full z-100 h-20 flex items-center justify-between px-6 min-[917px]:px-12 xl:px-24 transition-all duration-500 ${
-          scrolled || isOpen ? "bg-white shadow-lg py-2" : "bg-white min-[917px]:bg-transparent py-4"
+          scrolled || isOpen
+            ? "bg-white shadow-lg py-2"
+            : "bg-white min-[917px]:bg-transparent py-4"
         }`}
       >
-        <Link to="/" className="text-3xl font-extrabold z-110 transition-colors duration-300 text-black">
+        <Link
+          to="/"
+          className="text-3xl font-extrabold z-110 transition-colors duration-300 text-black"
+        >
           UniKart
         </Link>
 
         {/* --- DESKTOP NAV --- */}
         <div className="hidden min-[917px]:flex items-center justify-between w-full max-w-5xl ml-8">
           <div className="flex gap-8 lg:gap-12 text-lg font-medium items-center transition-colors duration-300 text-black">
-            <Link to={routes.home} className="hover:text-orange-500 transition-colors">Home</Link>
-            
+            <Link
+              to={routes.home}
+              className="hover:text-orange-500 transition-colors"
+            >
+              Home
+            </Link>
+
+            {/* STUDENT */}
             <div className="relative group">
               <div className="flex items-center cursor-pointer hover:text-orange-500 transition-colors">
                 Student <FiChevronDown className="ml-1" />
               </div>
+
               <div className="absolute top-full left-0 mt-2 w-52 bg-white shadow-xl rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 text-black border border-gray-100">
-                <Link to={routes.marketplace} className="block px-5 py-3 hover:bg-gray-100">Marketplace</Link>
-                <Link to={routes.viewNotesStudent} className="block px-5 py-3 hover:bg-gray-100">View Notes</Link>
-                <Link to={routes.viewNoticesStudent} className="block px-5 py-3 hover:bg-gray-100">View Notice</Link>
-                <Link to={routes.sellItems} className="block px-5 py-3 hover:bg-gray-100">Sell Items</Link>
-                <Link to={routes.careerInternship} className="block px-5 py-3 hover:bg-gray-100 text-black font-semibold">Training / Internship</Link>
+                <Link
+                  to={routes.marketplace}
+                  className="block px-5 py-3 hover:bg-gray-100"
+                >
+                  Marketplace
+                </Link>
+
+                <Link
+                  to={routes.viewNotesStudent}
+                  className="block px-5 py-3 hover:bg-gray-100"
+                >
+                  View Notes
+                </Link>
+
+                <Link
+                  to={routes.viewNoticesStudent}
+                  className="block px-5 py-3 hover:bg-gray-100"
+                >
+                  View Notice
+                </Link>
+
+                <Link
+                  to={routes.sellItems}
+                  className="block px-5 py-3 hover:bg-gray-100"
+                >
+                  Sell Items
+                </Link>
+
+                <Link
+                  to={routes.careerInternship}
+                  className="block px-5 py-3 hover:bg-gray-100 text-black font-semibold"
+                >
+                  Training / Internship
+                </Link>
               </div>
             </div>
 
-            <Link to={routes.teacher} className="hover:text-orange-500 transition-colors">Teacher</Link>
-            <Link to={routes.admin} className="hover:text-orange-500 transition-colors">Admin</Link>
-            
+            {/* TEACHER */}
+            <Link
+              to={routes.teacher}
+              className="hover:text-orange-500 transition-colors"
+            >
+              Teacher
+            </Link>
+
+            {/* ✅ ADMIN ONLY */}
+            {user?.role === "admin" && (
+              <Link
+                to={routes.admin}
+                className="hover:text-orange-500 transition-colors"
+              >
+                Admin
+              </Link>
+            )}
+
             {token && (
-              <Link to={routes.messages} className="text-black hover:text-orange-500 transition-all flex items-center">
+              <Link
+                to={routes.messages}
+                className="text-black hover:text-orange-500 transition-all flex items-center"
+              >
                 <FiMessageSquare size={24} title="Messages" />
               </Link>
             )}
@@ -124,9 +194,19 @@ const Navbar = () => {
 
           <div className="flex items-center gap-6">
             {token ? (
-              <button onClick={handleLogout} className="px-8 py-2.5 bg-red-500 text-white rounded-full font-semibold hover:bg-red-600 transition-all">Logout</button>
+              <button
+                onClick={handleLogout}
+                className="px-8 py-2.5 bg-red-500 text-white rounded-full font-semibold hover:bg-red-600 transition-all"
+              >
+                Logout
+              </button>
             ) : (
-              <Link to={routes.login} className="px-8 py-2.5 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transition-all">Login</Link>
+              <Link
+                to={routes.login}
+                className="px-8 py-2.5 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 transition-all"
+              >
+                Login
+              </Link>
             )}
           </div>
         </div>
@@ -138,8 +218,9 @@ const Navbar = () => {
               <FiMessageSquare size={24} />
             </Link>
           )}
-          <button 
-            onClick={() => setIsOpen(!isOpen)} 
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
             className="text-black text-3xl focus:outline-none bg-transparent border-none p-0"
           >
             {isOpen ? <FiX /> : <FiMenu />}
@@ -154,42 +235,99 @@ const Navbar = () => {
         } min-[917px]:hidden flex flex-col pt-24 px-6 pb-10 shadow-2xl overflow-y-auto`}
       >
         <div className="flex flex-col gap-2">
-          <Link to={routes.home} className="text-xl font-bold py-4 border-b text-gray-800">Home</Link>
-          
+          <Link
+            to={routes.home}
+            className="text-xl font-bold py-4 border-b text-gray-800"
+          >
+            Home
+          </Link>
+
           {/* Student Dropdown - Mobile */}
           <div className="border-b">
-            <button 
+            <button
               onClick={() => setStudentDropdown(!studentDropdown)}
               className="w-full text-xl font-bold py-4 flex justify-between items-center text-gray-800 focus:outline-none"
             >
-              Student <FiChevronDown className={`transition-transform duration-300 ${studentDropdown ? 'rotate-180' : ''}`} />
+              Student{" "}
+              <FiChevronDown
+                className={`transition-transform duration-300 ${
+                  studentDropdown ? "rotate-180" : ""
+                }`}
+              />
             </button>
-            <div className={`flex flex-col bg-gray-50 transition-all duration-300 ease-in-out overflow-hidden ${
-              studentDropdown ? 'max-h-125 opacity-100 mb-4' : 'max-h-0 opacity-0'
-            }`}>
-              <Link to={routes.marketplace} className="p-3 pl-6 text-lg text-gray-600 border-b border-gray-200">Marketplace</Link>
-              <Link to={routes.viewNotesStudent} className="p-3 pl-6 text-lg text-gray-600 border-b border-gray-200">View Notes</Link>
-              <Link to={routes.viewNoticesStudent} className="p-3 pl-6 text-lg text-gray-600 border-b border-gray-200">View Notice</Link>
-              <Link to={routes.sellItems} className="p-3 pl-6 text-lg text-gray-600 border-b border-gray-200">Sell Items</Link>
-              <Link to={routes.careerInternship} className="p-3 pl-6 text-lg font-bold text-black flex items-center gap-2">
-                <FiBriefcase className="text-gray-700" /> Training / Internship
+
+            <div
+              className={`flex flex-col bg-gray-50 transition-all duration-300 ease-in-out overflow-hidden ${
+                studentDropdown
+                  ? "max-h-125 opacity-100 mb-4"
+                  : "max-h-0 opacity-0"
+              }`}
+            >
+              <Link
+                to={routes.marketplace}
+                className="p-3 pl-6 text-lg text-gray-600 border-b border-gray-200"
+              >
+                Marketplace
+              </Link>
+
+              <Link
+                to={routes.viewNotesStudent}
+                className="p-3 pl-6 text-lg text-gray-600 border-b border-gray-200"
+              >
+                View Notes
+              </Link>
+
+              <Link
+                to={routes.viewNoticesStudent}
+                className="p-3 pl-6 text-lg text-gray-600 border-b border-gray-200"
+              >
+                View Notice
+              </Link>
+
+              <Link
+                to={routes.sellItems}
+                className="p-3 pl-6 text-lg text-gray-600 border-b border-gray-200"
+              >
+                Sell Items
+              </Link>
+
+              <Link
+                to={routes.careerInternship}
+                className="p-3 pl-6 text-lg font-bold text-black flex items-center gap-2"
+              >
+                <FiBriefcase className="text-gray-700" />
+                Training / Internship
               </Link>
             </div>
           </div>
 
           {/* Teacher Dropdown - Mobile */}
           <div className="border-b">
-            <button 
+            <button
               onClick={() => setTeacherDropdown(!teacherDropdown)}
               className="w-full text-xl font-bold py-4 flex justify-between items-center text-gray-800 focus:outline-none"
             >
-              Teacher <FiChevronDown className={`transition-transform duration-300 ${teacherDropdown ? 'rotate-180' : ''}`} />
+              Teacher{" "}
+              <FiChevronDown
+                className={`transition-transform duration-300 ${
+                  teacherDropdown ? "rotate-180" : ""
+                }`}
+              />
             </button>
-            <div className={`flex flex-col bg-orange-50/50 transition-all duration-300 ease-in-out overflow-hidden ${
-              teacherDropdown ? 'max-h-125 opacity-100 mb-4' : 'max-h-0 opacity-0'
-            }`}>
+
+            <div
+              className={`flex flex-col bg-orange-50/50 transition-all duration-300 ease-in-out overflow-hidden ${
+                teacherDropdown
+                  ? "max-h-125 opacity-100 mb-4"
+                  : "max-h-0 opacity-0"
+              }`}
+            >
               {teacherLinks.map((link, index) => (
-                <Link key={index} to={link.path} className="flex items-center gap-3 p-3 pl-6 text-lg text-gray-600 border-b border-gray-200">
+                <Link
+                  key={index}
+                  to={link.path}
+                  className="flex items-center gap-3 p-3 pl-6 text-lg text-gray-600 border-b border-gray-200"
+                >
                   <span className="text-orange-500">{link.icon}</span>
                   {link.name}
                 </Link>
@@ -197,31 +335,57 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Admin Dropdown - Mobile */}
-          <div className="border-b">
-            <button 
-              onClick={() => setAdminDropdown(!adminDropdown)}
-              className="w-full text-xl font-bold py-4 flex justify-between items-center text-gray-800 focus:outline-none"
-            >
-              Admin <FiChevronDown className={`transition-transform duration-300 ${adminDropdown ? 'rotate-180' : ''}`} />
-            </button>
-            <div className={`flex flex-col bg-red-50/30 transition-all duration-300 ease-in-out overflow-hidden ${
-              adminDropdown ? 'max-h-200 opacity-100 mb-4' : 'max-h-0 opacity-0'
-            }`}>
-              {adminLinks.map((link, index) => (
-                <Link key={index} to={link.path} className="flex items-center gap-3 p-3 pl-6 text-lg text-gray-600 border-b border-gray-200 last:border-none">
-                  <span className="text-red-500">{link.icon}</span>
-                  {link.name}
-                </Link>
-              ))}
+          {/* ✅ ADMIN DROPDOWN ONLY FOR ADMIN */}
+          {user?.role === "admin" && (
+            <div className="border-b">
+              <button
+                onClick={() => setAdminDropdown(!adminDropdown)}
+                className="w-full text-xl font-bold py-4 flex justify-between items-center text-gray-800 focus:outline-none"
+              >
+                Admin{" "}
+                <FiChevronDown
+                  className={`transition-transform duration-300 ${
+                    adminDropdown ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              <div
+                className={`flex flex-col bg-red-50/30 transition-all duration-300 ease-in-out overflow-hidden ${
+                  adminDropdown
+                    ? "max-h-200 opacity-100 mb-4"
+                    : "max-h-0 opacity-0"
+                }`}
+              >
+                {adminLinks.map((link, index) => (
+                  <Link
+                    key={index}
+                    to={link.path}
+                    className="flex items-center gap-3 p-3 pl-6 text-lg text-gray-600 border-b border-gray-200 last:border-none"
+                  >
+                    <span className="text-red-500">{link.icon}</span>
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="mt-8">
             {token ? (
-              <button onClick={handleLogout} className="w-full py-4 bg-red-500 text-white rounded-xl font-bold text-lg shadow-md">Logout</button>
+              <button
+                onClick={handleLogout}
+                className="w-full py-4 bg-red-500 text-white rounded-xl font-bold text-lg shadow-md"
+              >
+                Logout
+              </button>
             ) : (
-              <Link to={routes.login} className="block w-full py-4 bg-orange-500 text-white text-center rounded-xl font-bold text-lg shadow-md">Login</Link>
+              <Link
+                to={routes.login}
+                className="block w-full py-4 bg-orange-500 text-white text-center rounded-xl font-bold text-lg shadow-md"
+              >
+                Login
+              </Link>
             )}
           </div>
         </div>
